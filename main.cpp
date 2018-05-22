@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "StudentoKlase.h"
 
 std::vector<studentas> stud;

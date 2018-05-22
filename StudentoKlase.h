@@ -35,9 +35,14 @@ public:
     friend std::ostream& operator<<(std::ostream&, const studentas&);
     bool operator< (const studentas& b);
 
+    bool operator> (const studentas& b);
+
+    bool operator== (const studentas& b);
+
+    bool operator!= (const studentas& b);
 
 
-    // Velnias žino kas čia per kodas
+    // Funkcijos
 
     float vidurkis();
 };
@@ -45,7 +50,7 @@ public:
 // Funkciju deklaravimas
 
 void Generuoti(int);
-void Nuskaityti(std::vector<studentas>&, std::string);
+bool Nuskaityti(std::vector<studentas>&, std::string);
 void Spausdinimas1(std::vector<studentas>&,std::vector<studentas>&,std::string );
 void Spausdinimas2(std::vector<studentas>&, std::vector<studentas>::iterator,std::string );
 void pirmaStrategija (std::string );

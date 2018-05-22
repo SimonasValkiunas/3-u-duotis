@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iomanip>
+#include <numeric>
 
     //Set'erei
 
@@ -24,38 +25,41 @@
     int studentas::getNd (int i){return nd[i];}
     double studentas::getGalutinis(){return galutinisBalas;}
 
-    // Velnais žino kas
+    //Funkcijos
     float studentas::vidurkis()
 {
     return (float)std::accumulate(nd.begin(),nd.end(),0)/(float)nd.size();
 }
 
-void Nuskaityti(std::vector<studentas> &stud, std::string failas) {
+bool Nuskaityti(std::vector<studentas> &stud, std::string failas) {
   std::ifstream fin;
   try {
     std::string input;
     fin.open (failas, std::ios::in | std::ios::binary);
-    if( !fin ) throw std::ios::failure( "Error opening file!");
+    if( !fin )throw std::ios::failure( "Error opening file!");
+
     getline(fin, input);
     while(fin >> input) {
-      studentas placeholder;
-      double paz;
-      placeholder.setVardas(input);
+      studentas temp;
+      int paz;
+      temp.setVardas(input);
       fin >> input;
-      placeholder.setPavarde(input);
+        temp.setPavarde(input);
       for(int i = 0; i < 5; i++) {
         fin >> paz;
-        placeholder.setNd(paz);
+          temp.setNd(paz);
       }
       fin >> paz;
-      placeholder.setEgzpazymys(paz);
-      placeholder.setGalutinis();
-      stud.push_back(placeholder);
+        temp.setEgzpazymys(paz);
+        temp.setGalutinis();
+      stud.push_back(temp);
     }
   } catch (const std::ifstream::failure &e) {
     std::cout << e.what() << std::endl;
+      return 0;
   }
   fin.close();
+  return 1;
 }
 
 void Spausdinimas1 (std::vector<studentas> &kietiakai, std::vector<studentas> &vargsiukai, std::string file) {
@@ -93,8 +97,21 @@ std::ostream& operator<<(std::ostream& out, const studentas& a) {
 
 bool studentas::operator< (const studentas& b) {
   return vardas < b.vardas;
+
 }
 
+bool studentas::operator==(const studentas &b) {
+  return vardas == b.vardas && pavarde == b.pavarde;
+}
+
+bool studentas::operator!=(const studentas &b) {
+  return !operator==(b);
+}
+
+
+bool studentas::operator> (const studentas& b) {
+  return vardas > b.vardas;
+}
 
 //Strategijos ir matavimas
 
