@@ -1,4 +1,15 @@
-# 3-u-duotis
+# 3-uzduotis
+
+
+v1.0 
+
+    Realizuoti Unit Testai naudojant Catch framework'ą
+
+ v0.2
+
+    Pridėta dokumentacija
+    Sukurti operatoriai
+
 Trečia OOP užduotis
 
 NAUDOJANT 1 STRATEGIJA
