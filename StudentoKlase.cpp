@@ -1,4 +1,5 @@
 #include "StudentoKlase.h"
+#include "mVector.h"
 
 #include <iostream>
 #include <string>
@@ -10,8 +11,8 @@
 
     //Set'erei
 
-    void studentas::setVardas (std::string x){vardas = x;}
-    void studentas::setPavarde (std::string x) {pavarde = x;}
+    void zmogus::setVardas (std::string x){vardas = x;}
+    void zmogus::setPavarde (std::string x) {pavarde = x;}
     void studentas::setEgzpazymys (double x) {egzaminoPazymys = x;}
     void studentas::setNd (int x){nd.push_back(x);}
     void studentas::setGalutinis(){
@@ -19,8 +20,8 @@
     }
     //Get'erei
 
-    std::string studentas::getVardas (){return vardas;}
-    std::string studentas::getPavarde (){return pavarde;}
+    std::string zmogus::getVardas (){return vardas;}
+    std::string zmogus::getPavarde (){return pavarde;}
     double studentas::getEgzPazymys () {return egzaminoPazymys;}
     int studentas::getNd (int i){return nd[i];}
     double studentas::getGalutinis(){return galutinisBalas;}
@@ -90,26 +91,26 @@ void Spausdinimas2 (std::vector<studentas> &kietiakai, std::vector<studentas>::i
 
 //Operatoriai
 
-std::ostream& operator<<(std::ostream& out, const studentas& a) {
+std::ostream& operator <<(std::ostream& out, const studentas& a) {
   out << std::left << std::setprecision(2) << std::fixed << std::setw(15) << a.pavarde << std::setw(15) << a.vardas << std::setw(20) << a.galutinisBalas << std::endl;
   return out;
 }
 
-bool studentas::operator< (const studentas& b) {
+ bool zmogus::operator< (const zmogus& b) {
   return vardas < b.vardas;
 
 }
 
-bool studentas::operator==(const studentas &b) {
+bool zmogus::operator==(const zmogus &b) {
   return vardas == b.vardas && pavarde == b.pavarde;
 }
 
-bool studentas::operator!=(const studentas &b) {
+bool zmogus::operator!=(const zmogus &b) {
   return !operator==(b);
 }
 
 
-bool studentas::operator> (const studentas& b) {
+bool zmogus::operator> (const zmogus& b) {
   return vardas > b.vardas;
 }
 
@@ -118,7 +119,7 @@ bool studentas::operator> (const studentas& b) {
 #include <chrono>
 
 void pirmaStrategija (std::string file) {
-  auto start = std::chrono::high_resolution_clock::now();
+  auto t1 = std::chrono::high_resolution_clock::now();
   std::vector<studentas> stud;
   std::vector<studentas> vargsiukai;
   std::vector<studentas> kietiakai;
@@ -131,40 +132,25 @@ void pirmaStrategija (std::string file) {
   std::sort(vargsiukai.begin(), vargsiukai.end());
   std::sort(kietiakai.begin(), kietiakai.end());
   Spausdinimas1(kietiakai, vargsiukai, file + "-rezultatai.txt");
-  auto finish = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed = finish - start;
-  std::cout << "Duomenu kiekis: " << std::setw(6) << file << " [Vector 1 strategija] Time taken: " << elapsed.count() << " s\n";
+  auto t2 = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed = t2 - t1;
+  std::cout << "Duomenu kiekis -  " << std::setw(6) << file << " Pirma Strategija - " << elapsed.count() << "s"<< std::endl;
   stud.clear();
 }
 
 bool jeiVargsiukas (studentas& x){ return x.galutinisBalas < 6.0;}
 
- void antraStrategija (std::string file) {
-  auto start = std::chrono::high_resolution_clock::now();
-  std::vector<studentas> stud;
-  std::vector<studentas> vargsiukai;
-  Nuskaityti(stud, file + ".txt");
-  std::sort(stud.begin(), stud.end());
-  std::sort(vargsiukai.begin(), vargsiukai.end());
-  copy_if(stud.begin(), stud.end(), back_inserter(vargsiukai), jeiVargsiukas );
-  stud.erase(remove_if(stud.begin(), stud.end(), jeiVargsiukas), stud.end());
-  Spausdinimas1(stud, vargsiukai, file + "-rezultatai.txt");
-  auto finish = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed = finish - start;
-  std::cout << "Duomenu kiekis: " << std::setw(6) << file << " [Vector 2 strategija] Time taken: " << elapsed.count() << " s\n";
-  stud.clear();
-}
 
-void stablePartition (std::string file) {
-  auto start = std::chrono::high_resolution_clock::now();
+void antraStrategija(std::string file) {
+  auto t1 = std::chrono::high_resolution_clock::now();
   std::vector<studentas> stud;
   Nuskaityti(stud, file + ".txt");
   std::sort(stud.begin(), stud.end());
-  std::vector<studentas>::iterator bound = stable_partition(stud.begin(), stud.end(), jeiVargsiukas);
-  Spausdinimas2(stud, bound, file + "-rezultatai.txt");
-  auto finish = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> elapsed = finish - start;
-  std::cout << "Duomenu kiekis: " << std::setw(6) << file << " [stable_partition()] Time taken: " << elapsed.count() << " s\n";
+  std::vector<studentas>::iterator it = stable_partition(stud.begin(), stud.end(), jeiVargsiukas);
+  Spausdinimas2(stud, it, file + "-rezultatai.txt");
+  auto t2 = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed = t2 - t1;
+  std::cout << "Duomenu kiekis - " << std::setw(6) << file << " Antra Strategija -  " << elapsed.count() << "s"<< std::endl;
   stud.clear();
 }
 

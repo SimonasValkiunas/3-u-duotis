@@ -4,47 +4,53 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "mVector.h"
 
 
-
-class studentas {
-
-private:
+class zmogus{
+protected:
     std::string vardas;
     std::string pavarde;
+public:
+
+    void setVardas (std::string ); //set'eriai
+    void setPavarde (std::string );  //set'eriai
+
+    std::string getVardas ();  //get'eriai
+    std::string getPavarde (); //get'eriai
+
+    virtual float vidurkis() =0;
+
+
+     bool operator< (const zmogus& b);
+
+     bool operator> (const zmogus& b);
+
+     bool operator== (const zmogus& b);
+
+    bool operator!= (const zmogus& b);
+
+};
+
+class studentas: public zmogus {
+
+protected:
     double egzaminoPazymys;
     std::vector<int> nd;
 public:
     studentas(): egzaminoPazymys(0) {} // konstruktorius
-     double galutinisBalas;
-
-    void setVardas (std::string ); //set'eriai
-    void setPavarde (std::string );  //set'eriai
+    double galutinisBalas;
     void setEgzpazymys (double );  //set'eriai
     void setNd (int );  //set'eriai
     void setGalutinis ();  //set'eriai
-
-    std::string getVardas ();  //get'eriai
-    std::string getPavarde (); //get'eriai
     double getEgzPazymys ();  //get'eriai
     int getNd (int);   //get'eriai
     double getGalutinis ();   //get'eriai
-
-
-    // Operatoriai
-    friend std::ostream& operator<<(std::ostream&, const studentas&);
-    bool operator< (const studentas& b);
-
-    bool operator> (const studentas& b);
-
-    bool operator== (const studentas& b);
-
-    bool operator!= (const studentas& b);
-
-
     // Funkcijos
 
     float vidurkis();
+
+    friend std::ostream& operator<<(std::ostream&, const studentas&);
 };
 
 // Funkciju deklaravimas
@@ -56,6 +62,5 @@ void Spausdinimas2(std::vector<studentas>&, std::vector<studentas>::iterator,std
 void pirmaStrategija (std::string );
 void antraStrategija(std::string );
 bool jeiVargsiukas (studentas& );
-void stablePartition(std::string);
 
 #endif // STUDENTOKLASE_H_INCLUDED
